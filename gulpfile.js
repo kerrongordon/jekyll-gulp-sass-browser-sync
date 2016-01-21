@@ -10,6 +10,8 @@ var jade        = require('gulp-jade');
 var htmlmin     = require('gulp-htmlmin');
 var copy2       = require('gulp-copy2');
 var del         = require('del');
+var plumber     = require('gulp-plumber');
+var notify      = require("gulp-notify");
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -47,6 +49,7 @@ gulp.task('browser-sync', ['sass', 'js', 'jekyll-build'], function() {
  */
 gulp.task('sass', function () {
     return gulp.src('_scss/main.scss')
+        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
         .pipe(sass({
             includePaths: ['scss'],
             onError: browserSync.notify
@@ -64,6 +67,7 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
   return gulp.src('_script/**/*.js')
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(gulp.dest('assets/js'));
@@ -75,12 +79,13 @@ gulp.task('js', function () {
 
 gulp.task('jadetem', function () {
   return gulp.src('_jade/**/*.jade')
-    .pipe(jade({pretty: true}))
-    .pipe(gulp.dest('_includes'));
+    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(jade())
+    .pipe(gulp.dest('./'));
 });
 
 /**
- * Rmove old dist dir 
+ * Rmove old dist dir
  */
 
 gulp.task('clean', function (cb) {
