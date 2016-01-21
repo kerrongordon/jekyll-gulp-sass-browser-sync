@@ -4,6 +4,8 @@ var sass        = require('gulp-sass');
 var prefix      = require('gulp-autoprefixer');
 var cp          = require('child_process');
 var minifyCss   = require('gulp-minify-css');
+var concat      = require('gulp-concat');
+var uglify      = require('gulp-uglify');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -51,6 +53,17 @@ gulp.task('sass', function () {
         .pipe(browserSync.reload({stream:true}))
         .pipe(gulp.dest('assets/css'));
 });
+
+/**
+ * Compile files from _scss into both _site/css (for live injecting) and site (for future jekyll builds)
+ */
+
+ gulp.task('js', function () {
+     return gulp.src('_script/**/*.js')
+        .pipe(concat('main.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('assets/js'))
+ });
 
 /**
  * Watch scss files for changes & recompile

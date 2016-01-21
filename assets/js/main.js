@@ -1,0 +1,1 @@
+var test1=function(){console.log("this is test one")}(),test2=function(){console.log("this is test two")}();
