@@ -7,6 +7,8 @@ var minifyCss   = require('gulp-minify-css');
 var concat      = require('gulp-concat');
 var uglify      = require('gulp-uglify');
 var jade        = require('gulp-jade');
+var htmlmin     = require('gulp-htmlmin');
+var copy2       = require('gulp-copy2');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -59,24 +61,40 @@ gulp.task('sass', function () {
  * Concat and uglify files from _script into assets/js
  */
 
- gulp.task('js', function () {
-     return gulp.src('_script/**/*.js')
-        .pipe(concat('main.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('assets/js'));
- });
+gulp.task('js', function () {
+  return gulp.src('_script/**/*.js')
+    .pipe(concat('main.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('assets/js'));
+});
 
  /**
   * Jade files from _jade into _includes
   */
 
-  gulp.task('jadetem', function () {
-      return gulp.src('_jade/**/*.jade')
-        .pipe(jade({
-          pretty: true
-        }))
-        .pipe(gulp.dest('_includes'));
-  });
+gulp.task('jadetem', function () {
+  return gulp.src('_jade/**/*.jade')
+    .pipe(jade({pretty: true}))
+    .pipe(gulp.dest('_includes'));
+});
+
+  /**
+   * Jade files from _jade into _includes
+   */
+
+gulp.task('htmlmin', function () {
+  return gulp.src('_site/**/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('copy', ['htmlmin'], function () {
+  var paths = [
+    {src: '_site/assets/**', dest: 'dist/assets/'},
+  ];
+  return copy2(paths);
+});
+
 
 /**
  * Watch scss files for changes & recompile
