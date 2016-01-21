@@ -9,6 +9,7 @@ var uglify      = require('gulp-uglify');
 var jade        = require('gulp-jade');
 var htmlmin     = require('gulp-htmlmin');
 var copy2       = require('gulp-copy2');
+var del         = require('del');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -78,15 +79,27 @@ gulp.task('jadetem', function () {
     .pipe(gulp.dest('_includes'));
 });
 
-  /**
-   * Jade files from _jade into _includes
-   */
+/**
+ * Rmove old dist dir 
+ */
 
-gulp.task('htmlmin', function () {
+gulp.task('clean', function (cb) {
+  return del(['dist/**'], cb);
+});
+
+/**
+ * Minify html and copy them into the dist dir
+ */
+
+gulp.task('htmlmin', ['clean'], function () {
   return gulp.src('_site/**/*.html')
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist'));
 });
+
+/**
+ * copy assets dir into the dist dir
+ */
 
 gulp.task('copy', ['htmlmin'], function () {
   var paths = [
@@ -94,6 +107,12 @@ gulp.task('copy', ['htmlmin'], function () {
   ];
   return copy2(paths);
 });
+
+/**
+ * build site into dist dir
+ */
+
+gulp.task('build', ['copy']);
 
 
 /**
