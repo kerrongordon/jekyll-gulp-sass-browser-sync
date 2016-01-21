@@ -55,7 +55,7 @@ gulp.task('sass', function () {
 });
 
 /**
- * Compile files from _scss into both _site/css (for live injecting) and site (for future jekyll builds)
+ * Concat and uglify files from _script into assets/js 
  */
 
  gulp.task('js', function () {
