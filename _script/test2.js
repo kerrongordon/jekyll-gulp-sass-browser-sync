@@ -1,3 +1,4 @@
 var test2 = (function(){
-  console.log('this is test two')
+  var testTwo = 'this is test two';
+  console.log(testTwo);
 })();

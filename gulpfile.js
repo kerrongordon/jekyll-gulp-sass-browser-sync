@@ -6,6 +6,7 @@ var cp          = require('child_process');
 var minifyCss   = require('gulp-minify-css');
 var concat      = require('gulp-concat');
 var uglify      = require('gulp-uglify');
+var jade        = require('gulp-jade');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -30,7 +31,7 @@ gulp.task('jekyll-rebuild', ['jekyll-build'], function () {
 /**
  * Wait for jekyll-build, then launch the Server
  */
-gulp.task('browser-sync', ['sass', 'jekyll-build'], function() {
+gulp.task('browser-sync', ['sass', 'js', 'jekyll-build'], function() {
     browserSync({
         server: {
             baseDir: '_site'
@@ -55,15 +56,27 @@ gulp.task('sass', function () {
 });
 
 /**
- * Concat and uglify files from _script into assets/js 
+ * Concat and uglify files from _script into assets/js
  */
 
  gulp.task('js', function () {
      return gulp.src('_script/**/*.js')
         .pipe(concat('main.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('assets/js'))
+        .pipe(gulp.dest('assets/js'));
  });
+
+ /**
+  * Jade files from _jade into _includes
+  */
+
+  gulp.task('jadetem', function () {
+      return gulp.src('_jade/**/*.jade')
+        .pipe(jade({
+          pretty: true
+        }))
+        .pipe(gulp.dest('_includes'));
+  });
 
 /**
  * Watch scss files for changes & recompile
@@ -71,7 +84,9 @@ gulp.task('sass', function () {
  */
 gulp.task('watch', function () {
     gulp.watch('_scss/*.scss', ['sass']);
-    gulp.watch(['index.html', '_layouts/*.html', '_posts/*'], ['jekyll-rebuild']);
+    gulp.watch('_script/**/*.js', ['js', 'jekyll-rebuild']);
+    gulp.watch('_jade/**/*.jade', ['jadetem']);
+    gulp.watch(['index.html', '_layouts/*.html', '_posts/*', '_includes/**/*.html'], ['jekyll-rebuild']);
 });
 
 /**
