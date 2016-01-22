@@ -6,7 +6,6 @@ var cp          = require('child_process');
 var minifyCss   = require('gulp-minify-css');
 var concat      = require('gulp-concat');
 var uglify      = require('gulp-uglify');
-var jade        = require('gulp-jade');
 var htmlmin     = require('gulp-htmlmin');
 var copy2       = require('gulp-copy2');
 var del         = require('del');
@@ -74,17 +73,6 @@ gulp.task('js', function () {
     .pipe(gulp.dest('assets/js'));
 });
 
- /**
-  * Jade files from _jade into _includes
-  */
-
-gulp.task('jadetem', function () {
-  return gulp.src('_jade/**/*.jade')
-    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(jade())
-    .pipe(gulp.dest('./'));
-});
-
 /**
  * Rmove old dist dir
  */
@@ -128,7 +116,6 @@ gulp.task('build', ['copy']);
 gulp.task('watch', function () {
     gulp.watch('_scss/**/*.sass', ['sass']);
     gulp.watch('_script/**/*.js', ['js', 'jekyll-rebuild']);
-    gulp.watch('_jade/**/*.jade', ['jadetem']);
     gulp.watch(['index.html', '_layouts/*.html', '_posts/*', '_includes/**/*.html'], ['jekyll-rebuild']);
 });
 
