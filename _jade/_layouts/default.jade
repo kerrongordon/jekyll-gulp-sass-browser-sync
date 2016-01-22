@@ -1,32 +1,10 @@
-doctype html
-html
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title {{ page.title }}
-    meta(name='viewport', content='width=device-width')
-    // Custom CSS
-    link(rel='stylesheet', href='{{ site.baseurl }}/assets/css/main.css')
-    script(src='{{ site.baseurl }}/assets/js/main.js')
-  body
-    .site
-      .header
-        h1.title
-          a(href='/') {{ site.name }}
-        a.extra(href='/') home
-      |           {{ content }}
-      |           {% include about.html %}
-      .footer
-        .contact
-          p
-            | Your Name is
-            br
-            |                 What You Are
-            br
-            |                 you@example.com
-        .contact
-          p
-            a(href='https://github.com/yourusername') github.com/yourusername
-            br
-            a(href='https://twitter.com/yourusername') twitter.com/yourusername
-            br
+{% include _meta/head.html %}
+body
+  .site
+    .header
+      h1.title
+        a(href='/') {{ site.name }}
+      a.extra(href='/') home
+    |           {{ content }}
+    .footer
+  
