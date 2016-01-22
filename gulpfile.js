@@ -11,6 +11,9 @@ var copy2       = require('gulp-copy2');
 var del         = require('del');
 var plumber     = require('gulp-plumber');
 var notify      = require("gulp-notify");
+var jshint      = require('gulp-jshint');
+var stylish     = require('jshint-stylish');
+
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -68,6 +71,8 @@ gulp.task('sass', function () {
 gulp.task('js', function () {
   return gulp.src('_script/**/*.js')
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish))
     .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(gulp.dest('assets/js'));
@@ -77,7 +82,7 @@ gulp.task('js', function () {
  * Rmove old dist dir
  */
 
-gulp.task('clean', function (cb) {
+gulp.task('clean', ['jekyll-build'], function (cb) {
   return del(['dist/**'], cb);
 });
 

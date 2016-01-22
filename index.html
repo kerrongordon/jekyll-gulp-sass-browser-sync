@@ -3,11 +3,40 @@ layout: default
 title: Your New Jekyll Site
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
+
+{% for post in site.posts %}
+<article class="post">
+
+  <div class="post__item post__media">
+    <div class="post__media__item">
+      {% if post.figureImage == null %} {% else %}
+      <img class="post__media__item--image" src="{{ post.figureImage }}" alt="">
+      {% endif %}
+      {% if post.figureVideo == null %} {% else %}
+      <iframe class="post__media__item--video" src="{{ post.figureVideo }}" frameborder="0" allowfullscreen></iframe>
+      {% endif %}
+      {% if post.figureOgg == null or post.figureMp3 == null %} {% else %}
+      <audio controls class="post__media__item--audio"><source src="{{ post.figureOgg }}" type="audio/ogg"><source src="{{ post.figureMp3 }}" type="audio/mpeg"></audio>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="post__item post__head">
+    <div class="post__head__item">
+      <h3 class="post__head__item--title">{{ post.title }}</h3>
+    </div>
+  </div>
+  <div class="post__item post__body">
+    <div class="post__body__item">
+      <div class="post__body__item--content">
+        {{ post.excerpt }}
+      </div>
+    </div>
+  </div>
+  <div class="post__item post__footer">
+    <div class="post__footer__item">
+      <div class="post__footer__item--date">{{ post.date | date_to_string }}</div>
+    </div>
+  </div>
+</article>
+{% endfor %}

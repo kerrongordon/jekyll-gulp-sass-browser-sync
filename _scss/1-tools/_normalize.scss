@@ -96,8 +96,9 @@ sub {
   bottom: -0.25em;
 }
 
-img {
+img, iframe {
   border: 0;
+  width: 100%;
 }
 
 svg:not(:root) {
