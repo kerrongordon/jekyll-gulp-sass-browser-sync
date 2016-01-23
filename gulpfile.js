@@ -13,7 +13,8 @@ var plumber     = require('gulp-plumber');
 var notify      = require("gulp-notify");
 var jshint      = require('gulp-jshint');
 var stylish     = require('jshint-stylish');
-
+var imagemin    = require('gulp-imagemin');
+var ghPages     = require('gulp-gh-pages');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -97,12 +98,23 @@ gulp.task('htmlmin', ['clean'], function () {
 });
 
 /**
- * copy assets dir into the dist dir
+ * copy images and minify them into the dist dir
  */
 
-gulp.task('copy', ['htmlmin'], function () {
+gulp.task('imgmin', ['htmlmin'], function () {
+  return gulp.src('_site/assets/img/**/*')
+    .pipe(imagemin({ progressive: true }))
+    .pipe(gulp.dest('dist/assets/img/'));
+});
+
+/**
+ * copy css and js form _site dir into the dist dir
+ */
+
+gulp.task('copy', ['imgmin'], function () {
   var paths = [
-    {src: '_site/assets/**', dest: 'dist/assets/'},
+    {src: '_site/assets/css/*', dest: 'dist/assets/css/'},
+    {src: '_site/assets/js/*', dest: 'dist/assets/js/'}
   ];
   return copy2(paths);
 });
@@ -111,7 +123,16 @@ gulp.task('copy', ['htmlmin'], function () {
  * build site into dist dir
  */
 
-gulp.task('build', ['copy']);
+gulp.task('build', ['copy'], function () {
+  return gulp.src("_site/")
+    .pipe(notify("Gulp Build Completed!"));
+});
+
+
+gulp.task('deploy', ['build'], function () {
+  return gulp.src('dist/**/*')
+    .pipe(ghPages());
+});
 
 
 /**
