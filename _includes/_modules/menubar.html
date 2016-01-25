@@ -1,17 +1,9 @@
-<!-- <section id="menubar" class="menubar">
-  <logo></logo>
-  <ul>
-    <li>Home
-      <a href="google.com"></a>
-    </li>
-    <li>Blog
-      <a href="google.com"></a>
-    </li>
-    <li>About
-      <a href="google.com"></a>
-    </li>
-    <li>Contact
-      <a href="google.com"></a>
-    </li>
-  </ul>
-</section> -->
+<section id="menubar" class="menubar">
+  <div class="container">
+    <ul class="menubar__item">
+    {% for menu in site.data.main-menu.main %}
+      <li class="menubar__items"><a href="{{ menu.link }}">{{ menu.title }}</a></li>
+    {% endfor %}
+    </ul>
+  </div>
+</section>
