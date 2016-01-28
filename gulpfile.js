@@ -51,7 +51,7 @@ gulp.task('browser-sync', ['sass', 'js', 'jekyll-build'], function() {
  * Compile files from _scss into both _site/css (for live injecting) and site (for future jekyll builds)
  */
 gulp.task('sass', function () {
-    return gulp.src('_scss/main.sass')
+    return gulp.src('app/_scss/main.sass')
         .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
         .pipe(sass({
             includePaths: ['scss'],
@@ -59,10 +59,9 @@ gulp.task('sass', function () {
             onError: browserSync.notify
         }))
         .pipe(prefix(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
-        .pipe(minifyCss())
         .pipe(gulp.dest('_site/assets/css'))
         .pipe(browserSync.reload({stream:true}))
-        .pipe(gulp.dest('assets/css'));
+        .pipe(gulp.dest('app/assets/css'));
 });
 
 /**
@@ -70,20 +69,20 @@ gulp.task('sass', function () {
  */
 
 gulp.task('js', function () {
-  return gulp.src('_script/**/*.js')
+  return gulp.src('app/_script/**/*.js')
     .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     .pipe(concat('main.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('assets/js'));
+    .pipe(gulp.dest('app/assets/js'));
 });
 
 /**
  * Rmove old dist dir
  */
 
-gulp.task('clean', ['jekyll-build'], function (cb) {
+gulp.task('clean', ['jekyll-build', 'js', 'sass'], function (cb) {
   return del(['dist/**'], cb);
 });
 
@@ -98,10 +97,20 @@ gulp.task('htmlmin', ['clean'], function () {
 });
 
 /**
+ * Minify css and copy them into the dist dir
+ */
+
+gulp.task('cssmin', ['htmlmin'], function () {
+  return gulp.src('_site/assets/css/**/*.css')
+    .pipe(minifyCss())
+    .pipe(gulp.dest('dist/assets/css/'));
+});
+
+/**
  * copy images and minify them into the dist dir
  */
 
-gulp.task('imgmin', ['htmlmin'], function () {
+gulp.task('imgmin', ['cssmin'], function () {
   return gulp.src('_site/assets/img/**/*')
     .pipe(imagemin({ progressive: true }))
     .pipe(gulp.dest('dist/assets/img/'));
@@ -113,7 +122,6 @@ gulp.task('imgmin', ['htmlmin'], function () {
 
 gulp.task('copy', ['imgmin'], function () {
   var paths = [
-    {src: '_site/assets/css/*', dest: 'dist/assets/css/'},
     {src: '_site/assets/js/*', dest: 'dist/assets/js/'}
   ];
   return copy2(paths);
@@ -140,9 +148,9 @@ gulp.task('deploy', ['build'], function () {
  * Watch html/md files, run jekyll & reload BrowserSync
  */
 gulp.task('watch', function () {
-    gulp.watch('_scss/**/*.sass', ['sass']);
-    gulp.watch('_script/**/*.js', ['js', 'jekyll-rebuild']);
-    gulp.watch(['index.html', '_layouts/*.html', '_posts/*', '_includes/**/*.html'], ['jekyll-rebuild']);
+    gulp.watch('app/_scss/**/*.sass', ['sass']);
+    gulp.watch('app/_script/**/*.js', ['js', 'jekyll-rebuild']);
+    gulp.watch(['app/**/*.html', '_posts/*'], ['jekyll-rebuild']);
 });
 
 /**
