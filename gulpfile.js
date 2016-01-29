@@ -74,7 +74,6 @@ gulp.task('js', function () {
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     .pipe(concat('main.js'))
-    .pipe(uglify())
     .pipe(gulp.dest('app/assets/js'));
 });
 
@@ -120,9 +119,15 @@ gulp.task('imgmin', ['cssmin'], function () {
  * copy css and js form _site dir into the dist dir
  */
 
-gulp.task('copy', ['imgmin'], function () {
+gulp.task('uglifyjs', ['imgmin'], function () {
+  return gulp.src('_site/assets/js/**/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/assets/js/'));
+});
+
+gulp.task('copy', ['uglifyjs'], function () {
   var paths = [
-    {src: '_site/assets/js/*', dest: 'dist/assets/js/'}
+    //{src: '_site/assets/js/*', dest: 'dist/assets/js/'}
   ];
   return copy2(paths);
 });
@@ -150,11 +155,13 @@ gulp.task('deploy', ['build'], function () {
 gulp.task('watch', function () {
     gulp.watch('app/_scss/**/*.sass', ['sass']);
     gulp.watch('app/_script/**/*.js', ['js', 'jekyll-rebuild']);
-    gulp.watch(['app/**/*.html', '_posts/*'], ['jekyll-rebuild']);
+    gulp.watch(['app/**/*.html', 'app/_posts/*', 'app/_data/*'], ['jekyll-rebuild']);
 });
 
 /**
  * Default task, running just `gulp` will compile the sass,
  * compile the jekyll site, launch BrowserSync & watch files.
  */
-gulp.task('default', ['browser-sync', 'watch']);
+gulp.task('default', ['build']);
+
+gulp.task('serve', ['browser-sync', 'watch']);

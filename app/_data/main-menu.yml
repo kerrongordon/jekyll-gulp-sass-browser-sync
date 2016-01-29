@@ -1,5 +1,5 @@
 main:
   - {title: 'Home', link: '/'}
-  - {title: 'blog', link: 'blog'}
-  - {title: 'About', link: 'about'}
-  - {title: 'Contact', link: 'contact'}
+  - {title: 'blog', link: '/blog'}
+  - {title: 'About', link: '/about'}
+  - {title: 'Contact', link: '/contact'}

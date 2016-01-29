@@ -1,0 +1,44 @@
+---
+layout: default
+title: blog
+tagline: This is the blog tagline
+description: This is the blog page description
+---
+
+{% for post in site.posts %}
+<article class="post">
+
+  <div class="post__item post__media">
+    <div class="post__media__item">
+      {% if post.figureImage == null %} {% else %}
+      <img class="post__media__item--image" src="{{ post.figureImage }}" alt="">
+      {% endif %}
+      {% if post.figureVideo == null %} {% else %}
+      <iframe class="post__media__item--video" src="{{ post.figureVideo }}" frameborder="0" allowfullscreen></iframe>
+      {% endif %}
+      {% if post.figureOgg == null or post.figureMp3 == null %} {% else %}
+      <audio controls class="post__media__item--audio"><source src="{{ post.figureOgg }}" type="audio/ogg"><source src="{{ post.figureMp3 }}" type="audio/mpeg"></audio>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="post__item post__head">
+    <div class="post__head__item">
+      <h3 class="post__head__item--title">{{ post.title }}</h3>
+    </div>
+  </div>
+  <div class="post__item post__body">
+    <div class="post__body__item">
+      <div class="post__body__item--content">
+        {{ post.excerpt }}
+        <a href="{{ site.baseurl }}{{ post.url }}">Read more</a>
+      </div>
+    </div>
+  </div>
+  <div class="post__item post__footer">
+    <div class="post__footer__item">
+      <div class="post__footer__item--date">{{ post.date | date_to_string }}</div>
+    </div>
+  </div>
+</article>
+{% endfor %}

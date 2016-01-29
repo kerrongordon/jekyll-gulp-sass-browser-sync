@@ -3,7 +3,6 @@ layout: post
 title:  "Welcome"
 date:   2014-04-20 09:11:03
 categories: jekyll update
-figureImage: 'http://omega.oxygenna.com/wp-content/uploads/2014/04/image-07-normal.jpg'
 ---
 
 You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!

@@ -1,9 +1,12 @@
 name: Your New Jekyll Site
+description: this is just an description for the site
 markdown: redcarpet
 highlighter: pygments # or rouge or null
 exclude: ["node_modules", "gulpfile.js", "package.json", "dist", "bower.json", ".bowerrc", "README.md", "components"]
 
 source: app/
 
-analytics: UA-XXXXX-Y
+google-analytics: UA-XXXXX-Y
 baseurl: ''
+
+permalink: pretty
