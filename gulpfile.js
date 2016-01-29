@@ -15,6 +15,7 @@ var jshint      = require('gulp-jshint');
 var stylish     = require('jshint-stylish');
 var imagemin    = require('gulp-imagemin');
 var ghPages     = require('gulp-gh-pages');
+var sourcemaps  = require('gulp-sourcemaps');
 
 var messages = {
     jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
@@ -52,6 +53,7 @@ gulp.task('browser-sync', ['sass', 'js', 'jekyll-build'], function() {
  */
 gulp.task('sass', function () {
     return gulp.src('app/_scss/main.sass')
+      .pipe(sourcemaps.init())
         .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
         .pipe(sass({
             includePaths: ['scss'],
@@ -61,7 +63,8 @@ gulp.task('sass', function () {
         .pipe(prefix(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
         .pipe(gulp.dest('_site/assets/css'))
         .pipe(browserSync.reload({stream:true}))
-        .pipe(gulp.dest('app/assets/css'));
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('app/assets/css'));
 });
 
 /**
@@ -70,10 +73,12 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
   return gulp.src('app/_script/**/*.js')
-    .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish))
-    .pipe(concat('main.js'))
+    .pipe(sourcemaps.init())
+      .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+      .pipe(jshint())
+      .pipe(jshint.reporter(stylish))
+      .pipe(concat('main.js'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/assets/js'));
 });
 
