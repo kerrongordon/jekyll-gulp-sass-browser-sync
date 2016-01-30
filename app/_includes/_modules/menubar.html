@@ -1,18 +1,20 @@
-<nav>
-  <div class="nav-wrapper">
-    <div class="container">
-      <a href="#!" class="brand-logo">Logo</a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        {% for menu in site.data.main-menu.main %}
-        <li><a href="{{ menu.link }}">{{ menu.title }}</a></li>
-        {% endfor %}
-      </ul>
-      <ul class="side-nav" id="mobile-demo">
-        {% for menu in site.data.main-menu.main %}
-        <li><a href="{{ site.baseurl }}{{ menu.link }}">{{ menu.title }}</a></li>
-        {% endfor %}
-      </ul>
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
+      <div class="container">
+        <a href="#!" class="brand-logo">Logo</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          {% for menu in site.data.main-menu.main %}
+          <li><a href="{{ menu.link }}">{{ menu.title }}</a></li>
+          {% endfor %}
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          {% for menu in site.data.main-menu.main %}
+          <li><a href="{{ site.baseurl }}{{ menu.link }}">{{ menu.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>
