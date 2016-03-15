@@ -22,11 +22,12 @@ var messages = {
 };
 
 var app = {
-  base:   'app',
-  sass:   'app/_scss/main.sass',
-  css:    'app/assets/css',
-  js:     'app/_script/**/*.js',
-  jsa:    'app/assets/js'
+  base:     'app',
+  sass:     'app/_scss/main.sass',
+  css:      'app/assets/css',
+  js:       'app/_script/js/**/*.js',
+  jsa:      'app/assets/js',
+  vendorjs: 'app/_script/vendor/**/*.js'
 };
 
 var site = {
@@ -115,7 +116,16 @@ gulp.task('js', function () {
       .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
       .pipe(jshint())
       .pipe(jshint.reporter(stylish))
-      .pipe(concat('main.js'))
+      .pipe(concat('main-min.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(app.jsa));
+});
+
+gulp.task('jsvendor', function () {
+  return gulp.src(app.vendorjs)
+    .pipe(sourcemaps.init())
+      .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+      .pipe(concat('vendor-min.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(app.jsa));
 });
@@ -125,7 +135,7 @@ gulp.task('js', function () {
 // Rmove old dist dir
 //--------------------------------------------------------------------------------------------------------
 
-gulp.task('clean', ['jekyll-build', 'js', 'sass'], function (cb) {
+gulp.task('clean', ['jekyll-build', 'js', 'jsvendor', 'sass'], function (cb) {
   return del([dist.all], cb);
 });
 
@@ -180,7 +190,18 @@ gulp.task('uglifyjs', ['imgmin'], function () {
 
 gulp.task('copy', ['uglifyjs'], function () {
   var paths = [
-    //{src: '_site/assets/js/*', dest: 'dist/assets/js/'}
+    {src: '_site/.htaccess', dest: 'dist/.htaccess'},
+    {src: '_site/feed.xml', dest: 'dist/feed.xml'},
+    {src: '_site/.gitattributes', dest: 'dist/.gitattributes'},
+    {src: '_site/.editorconfig', dest: 'dist/.editorconfig'},
+    {src: '_site/tile-wide.png', dest: 'dist/tile-wide.png'},
+    {src: '_site/tile.png', dest: 'dist/tile.png'},
+    {src: '_site/robots.txt', dest: 'dist/robots.txt'},
+    {src: '_site/humans.txt', dest: 'dist/humans.txt'},
+    {src: '_site/favicon.ico', dest: 'dist/favicon.ico'},
+    {src: '_site/crossdomain.xml', dest: 'dist/crossdomain.xml'},
+    {src: '_site/browserconfig.xml', dest: 'dist/browserconfig.xml'},
+    {src: '_site/apple-touch-icon.png', dest: 'dist/apple-touch-icon.png'}
   ];
   return copy2(paths);
 });

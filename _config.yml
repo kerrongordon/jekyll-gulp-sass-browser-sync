@@ -2,7 +2,30 @@ name: Your New Jekyll Site
 description: this is just an description for the site
 markdown: redcarpet
 highlighter: pygments # or rouge or null
-exclude: ["node_modules", "gulpfile.js", "package.json", "dist", "bower.json", ".bowerrc", "README.md", "components"]
+exclude: [
+  "node_modules",
+  "gulpfile.js",
+  "package.json",
+  "dist",
+  "bower.json",
+  ".bowerrc",
+  "README.md",
+  "components"
+]
+
+include: [
+  ".htaccess",
+  ".gitattributes",
+  ".editorconfig",
+  "tile-wide.png",
+  "tile.png",
+  "robots.txt",
+  "humans.txt",
+  "favicon.ico",
+  "crossdomain.xml",
+  "browserconfig.xml",
+  "apple-touch-icon.png"
+]
 
 source: app/
 

@@ -1,9 +1,9 @@
 ---
-layout: post
+layout: default
 title: Code Snippets
 category: Design
 
-excerpt: Quick overview on how to post code snippets using Liquid tags and how to escape or not escape markdown and HTML in your blog entries. 
+excerpt: Quick overview on how to post code snippets using Liquid tags and how to escape or not escape markdown and HTML in your blog entries.
 
 ---
 
