@@ -48,11 +48,12 @@ var dist = {
 };
 
 var watch = {
-  sass:   'app/_scss/**/*.sass',
-  js:     'app/_script/**/*.js',
-  html:   'app/**/*.html',
-  post:   'app/_posts/*',
-  data:   'app/_data/*'
+  sass:     'app/_scss/**/*.sass',
+  js:       'app/_script/**/*.js',
+  html:     'app/**/*.html',
+  include:  'app/_include/**/*.html',
+  post:     'app/_posts/*',
+  data:     'app/_data/*'
 };
 
 //--------------------------------------------------------------------------------------------------------
@@ -235,7 +236,7 @@ gulp.task('deploy', ['build'], function () {
 gulp.task('watch', function () {
     gulp.watch(watch.sass, ['sass']);
     gulp.watch(watch.js, ['js', 'jekyll-rebuild']);
-    gulp.watch([watch.html, watch.post, watch.data], ['jekyll-rebuild']);
+    gulp.watch([watch.html, watch.post, watch.include, watch.data], ['jekyll-rebuild']);
 });
 
 
