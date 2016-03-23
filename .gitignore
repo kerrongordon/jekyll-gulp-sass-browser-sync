@@ -4,3 +4,6 @@ node_modules
 dist
 .publish
 app/components
+.publish
+vendor
+.directory
