@@ -1,7 +1,46 @@
 .hero
   width: 100%
   height: 300px
+  z-index: 1
+  position: relative
   +background(linear-gradient(-45deg, $accent2, $accent))
 
   +e('home')
     height: 700px
+    background: url(../img/herobg.jpg)
+    background-size: cover
+    background-position: 50% 50%
+
+  +e('overlay')
+    position: absolute
+    background: $black
+    opacity: 0.5
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 5
+
+  +e('logo')
+    background: url(../img/logo.png)
+    position: absolute
+    z-index: 10
+    width: 500px
+    height: 239px
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+
+@media (max-width: 750px)
+  .hero
+
+    +e('home')
+      background: url(../img/herobg-small.jpg)
+      background-size: cover
+      height: 500px
+
+    +e('logo')
+      background: url(../img/logo-small.png)
+      width: 300px
+      height: 143px
