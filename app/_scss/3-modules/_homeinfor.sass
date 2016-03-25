@@ -1,0 +1,57 @@
+.homeinfor
+
+  +e('item')
+
+    +e('img')
+      margin: 0 20px 0 20px
+      svg
+        width: 400px
+        height: 300px
+
+    +e('infor')
+      width: 60%
+
+    +e('title')
+      font-size: 2.5em
+      line-height: 1.5em
+      margin: 0
+
+    +e('content')
+      font-size: 1.6em
+
+@media (max-width: $tablet)
+  .homeinfor
+
+    +e('item')
+
+      +e('img')
+        svg
+          width: 300px
+          height: 200px
+
+      +e('title')
+        font-size: 2em
+
+      +e('content')
+        font-size: 1.5em
+
+@media (max-width: $mobile)
+  .homeinfor
+
+    +e('item')
+      +flex-direction(column)
+
+      +e('img')
+        margin: 20px 0
+        svg
+          width: 300px
+          height: 200px
+
+      +e('infor')
+        width: 100%
+
+      +e('title')
+        font-size: 1.7em
+
+      +e('content')
+        font-size: 1.3em
